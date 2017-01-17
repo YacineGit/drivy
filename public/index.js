@@ -163,8 +163,8 @@ var rentalModifications = [{
   'pickupDate': '2015-12-05'
 }];
 
-function priceCarsDay(rental) //Get price of cars 
-{
+function priceCarsDay(rental){ //Get price of cars per day
+
     var carId = rental.carId;
     for (var i = 0 ; i <  cars.length; i++) {
       if(cars[i].id == carId){
@@ -172,8 +172,7 @@ function priceCarsDay(rental) //Get price of cars
       }
     }
 }
-function priceCarsKm(rental)
-{
+function priceCarsKm(rental){ //Get price of cars per km
     var carId = rental.carId;
     for (var i = 0 ; i <  cars.length; i++) {
       if(cars[i].id == carId){
@@ -182,17 +181,17 @@ function priceCarsKm(rental)
     }
 }
 
-function dateRental(rental){
+function dateRental(rental){ // Difference between pick up and return 
     var date1 = new Date(rental.returnDate);
     var date2 = new Date(rental.pickupDate);
     return dateDiff(date2, date1);
 }
-function rentalPrice(rental){
+function rentalPrice(rental){ // Rental price
     var timeComponent = dateRental(rental) * (priceCarsDay(rental));
     var distanceComponent = rental.distance *(priceCarsKm(rental));
-    return timeComponent + distanceComponent;
+    return timeComponent + distanceComponent; 
 }
-function dateDiff(date1, date2){
+function dateDiff(date1, date2){ // Differenre between 2 dates
     var diff = {}                           
     var tmp = date2 - date1;
  
@@ -208,15 +207,15 @@ function dateDiff(date1, date2){
     tmp = Math.floor((tmp-diff.hour)/24);   
     diff.day = tmp;
      
-    return diff.day + 1;
+    return diff.day + 1; // 
 }
-function RentalPrice(rental){
+function rentalPrice(rental){ // Get decreasing pricing for longer rentals
 
-    if(dateRental(rental) > 1){
+    if(dateRental(rental) > 1){ // After 1 day
 
-      if(dateRental(rental) > 4){
+      if(dateRental(rental) > 4){ // After 4 day
 
-        if (dateRental(rental) > 10) {
+        if (dateRental(rental) > 10) { // After 10 day
 
             rental.price = (dateRental(rental)*priceCarsDay(rental))*0.5;
 
@@ -226,6 +225,14 @@ function RentalPrice(rental){
       rental.price = (dateRental(rental)*priceCarsDay(rental))*0.9;
     }
     rental.price = dateRental(rental)*priceCarsDay(rental);
+} 
+function commissionCost(rental){ // Put commission 
+
+      rentalPrice(rental);
+      var com = (rental.price)*0.3; //commission
+      rental.commission.insurance = com*0.5; // insurance
+      rental.commission.assistance = dateRental(rental); //assistance
+      rental.commission.drivy = com - (rental.commission.insurance) - (rental.commission.assistance); //drivy
 } 
 console.log(cars);
 console.log(rentals);
