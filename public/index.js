@@ -154,8 +154,6 @@ var actors = [{
   }]
 }];
 
-//list of rental modifcation
-//useful for exercise 6
 var rentalModifications = [{
   'rentalId': '1-pb-92',
   'returnDate': '2016-01-04',
@@ -165,7 +163,7 @@ var rentalModifications = [{
   'pickupDate': '2015-12-05'
 }];
 
-function priceCarsDay(rental)
+function priceCarsDay(rental) //Get price of cars 
 {
     var carId = rental.carId;
     for (var i = 0 ; i <  cars.length; i++) {
@@ -184,40 +182,51 @@ function priceCarsKm(rental)
     }
 }
 
-function dateRental(rental)
-{
+function dateRental(rental){
     var date1 = new Date(rental.returnDate);
     var date2 = new Date(rental.pickupDate);
     return dateDiff(date2, date1);
-
 }
-function rentalPrice(rental)
-{
+function rentalPrice(rental){
     var timeComponent = dateRental(rental) * (priceCarsDay(rental));
     var distanceComponent = rental.distance *(priceCarsKm(rental));
     return timeComponent + distanceComponent;
-
 }
-
 function dateDiff(date1, date2){
-    var diff = {}                           // Initialisation du retour
+    var diff = {}                           
     var tmp = date2 - date1;
  
-    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+    tmp = Math.floor(tmp/1000);             
+    diff.sec = tmp % 60;                    
  
-    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+    tmp = Math.floor((tmp-diff.sec)/60);    
+    diff.min = tmp % 60;                    
  
-    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+    tmp = Math.floor((tmp-diff.min)/60);    
+    diff.hour = tmp % 24;                   
      
-    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+    tmp = Math.floor((tmp-diff.hour)/24);   
     diff.day = tmp;
      
-    return diff.day+1;
+    return diff.day + 1;
 }
+function RentalPrice(rental){
 
+    if(dateRental(rental) > 1){
+
+      if(dateRental(rental) > 4){
+
+        if (dateRental(rental) > 10) {
+
+            rental.price = (dateRental(rental)*priceCarsDay(rental))*0.5;
+
+        }
+        rental.price = (dateRental(rental)*priceCarsDay(rental))*0.7;
+      }
+      rental.price = (dateRental(rental)*priceCarsDay(rental))*0.9;
+    }
+    rental.price = dateRental(rental)*priceCarsDay(rental);
+} 
 console.log(cars);
 console.log(rentals);
 console.log(actors);
