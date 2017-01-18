@@ -243,10 +243,69 @@ function deductibleCost(rental){ // Put deductible if there is
         rental.price = rental.price * 1;
     }
 }
+function getDriverPrice(actor){ // Get price for specific rental ID
+
+    var rentalID = actor.rentalId;
+    for (var i = 0 ; i <  rentals.length; i++) {
+      if(rentals[i].id == rentalID){
+          return rentals[i].price;
+      }
+    }
+}
+function getOwnerPrice(actor){ // Get owner for specific rental ID
+
+    var rentalID = actor.rentalId;
+    for (var i = 0 ; i <  rentals.length; i++) {
+      if(rentals[i].id == rentalID){
+          return (rentals[i].price)*0.7;
+      }
+    }
+}
+function getDrivyCommission(actor){ // Get drivy commission for specific rental ID
+
+    var rentalID = actor.rentalId;
+    for (var i = 0 ; i <  rentals.length; i++) {
+      if(rentals[i].id == rentalID){
+          return rentals[i].commission.drivy;
+      }
+    }
+}
+function getInsuranceCommission(actor){ // Get insurance commission for specific rental ID
+
+    var rentalID = actor.rentalId;
+    for (var i = 0 ; i <  rentals.length; i++) {
+      if(rentals[i].id == rentalID){
+          return rentals[i].commission.insurance;
+      }
+    }
+}
+function getAssitanceCommission(actor){ // Get assistance commission for specific rental ID
+
+    var rentalID = actor.rentalId;
+    for (var i = 0 ; i <  rentals.length; i++) {
+      if(rentals[i].id == rentalID){
+          return rentals[i].commission.assistance;
+      }
+    }
+}
+function payActors(rental){ // Put for each actor the amount
+ 
+    for (var i = 0 ; i <  actors.length; i++) {
+
+        if(actors[i].rentalId == rental.id){
+            actors[i].payment[0].amount = getDriverPrice(actors[i]);
+            actors[i].payment[1].amount = getOwnerPrice(actors[i]);
+            actors[i].payment[2].amount = getInsuranceCommission(actors[i]);
+            actors[i].payment[3].amount = getAssitanceCommission(actors[i]);
+            actors[i].payment[4].amount = getDrivyCommission(actors[i]);
+        }
+    }
+}
 
 for (var i = 0; i < rentals.length; i++){ // Loop for each rental
     commissionCost(rentals[i]);
     deductibleCost(rentals[i]);
+    payActors(rentals[i]);
   }
 console.log(cars);
 console.log(rentals);
