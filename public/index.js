@@ -234,6 +234,20 @@ function commissionCost(rental){ // Put commission
       rental.commission.assistance = dateRental(rental); //assistance
       rental.commission.drivy = com - (rental.commission.insurance) - (rental.commission.assistance); //drivy
 } 
+function deductibleCost(rental){ // Put deductible if there is
+    
+    if(rental.options.deductibleReduction == true){
+        rental.price = rental.price + (dateRental(rental) * 4);
+        rental.commission.drivy = rental.commission.drivy + dateRental(rental)*4;
+    } else { // false
+        rental.price = rental.price * 1;
+    }
+}
+
+for (var i = 0; i < rentals.length; i++){ // Loop for each rental
+    commissionCost(rentals[i]);
+    deductibleCost(rentals[i]);
+  }
 console.log(cars);
 console.log(rentals);
 console.log(actors);
